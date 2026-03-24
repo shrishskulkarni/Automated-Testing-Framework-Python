@@ -1,5 +1,9 @@
 # Automated Testing Framework (Python)
 
+[![CI](https://github.com/shrishskulkarni/Automated-Testing-Framework-Python/actions/workflows/tests.yml/badge.svg)](https://github.com/shrishskulkarni/Automated-Testing-Framework-Python/actions/workflows/tests.yml)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 A beginner-friendly yet professional Python project that demonstrates core testing and automation concepts:
 assertions, modular test execution, resilient failure handling, timestamped logging, CLI options, and report exports.
 
@@ -10,7 +14,7 @@ This project is designed to showcase practical QA/Automation fundamentals in a c
 ## Features
 
 - Modular structure with dedicated files for test cases, logging, and execution
-- Assertion-based test cases (2 pass + 1 intentional fail demo)
+- Assertion-based test cases with optional intentional-fail demo mode
 - Graceful exception handling (one failure does not stop the test run)
 - Clear terminal output with optional color and verbose mode
 - End-of-run summary (total, passed, failed)
@@ -33,8 +37,13 @@ Automated-Testing-Framework-Python/
 ## Requirements
 
 - Python 3.10+ (works on Windows/macOS/Linux)
+- Install dependencies:
 
-No external libraries are required.
+```bash
+pip install -r requirements.txt
+```
+
+This project uses `colorama` for reliable colored output on Windows terminals.
 
 ## How To Run
 
@@ -55,6 +64,9 @@ python main.py --no-color
 
 # Save JSON/CSV reports to a custom folder
 python main.py --output-dir custom_reports
+
+# Include intentional failure test for demo/interview walkthroughs
+python main.py --include-intentional-fail --verbose
 ```
 
 ## Example Output
@@ -64,15 +76,15 @@ Running automated test suite...
 
 [PASS] test_addition
 [PASS] test_string_uppercase
-[FAIL] test_intentional_failure
+[PASS] test_sorted_order
 
 =============================================
 Test Execution Summary
 =============================================
 Total tests : 3
-Passed      : 2
-Failed      : 1
-Overall     : SOME TESTS FAILED
+Passed      : 3
+Failed      : 0
+Overall     : ALL TESTS PASSED
 =============================================
 ```
 
@@ -102,5 +114,4 @@ Add terminal screenshots or a short GIF here for your portfolio:
 
 - Add support for test discovery from multiple files
 - Add tags or categories for selective test execution
-- Integrate with CI (GitHub Actions) to run tests on every push
 - Generate HTML report output

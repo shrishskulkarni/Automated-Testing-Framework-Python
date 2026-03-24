@@ -14,9 +14,11 @@ Features:
 import argparse
 import csv
 import json
+import sys
 from datetime import datetime
 from pathlib import Path
 
+from colorama import just_fix_windows_console
 from logger import log_message, log_run_footer, log_run_header
 from test_cases import get_test_cases
 
@@ -73,14 +75,18 @@ def export_results(
     return json_path, csv_path
 
 
-def run_all_tests(verbose: bool = False, use_color: bool = True):
+def run_all_tests(
+    verbose: bool = False,
+    use_color: bool = True,
+    include_intentional_fail: bool = False,
+):
     """
     Execute all tests and collect a detailed result for each one.
 
     Returns:
         tuple: (results, passed_count, failed_count)
     """
-    tests = get_test_cases()
+    tests = get_test_cases(include_intentional_failure=include_intentional_fail)
     results = []
     passed_count = 0
     failed_count = 0
@@ -169,17 +175,27 @@ def parse_args():
         default="reports",
         help="Directory to save JSON/CSV reports (default: reports).",
     )
+    parser.add_argument(
+        "--include-intentional-fail",
+        action="store_true",
+        help="Include the intentional failure test for demo purposes.",
+    )
     return parser.parse_args()
 
 
-def main() -> None:
+def main() -> int:
     """Program entry point."""
     args = parse_args()
+    just_fix_windows_console()
     use_color = not args.no_color
     output_dir = Path(args.output_dir)
 
     print("Running automated test suite...\n")
-    results, passed, failed = run_all_tests(verbose=args.verbose, use_color=use_color)
+    results, passed, failed = run_all_tests(
+        verbose=args.verbose,
+        use_color=use_color,
+        include_intentional_fail=args.include_intentional_fail,
+    )
     total = len(results)
     print_summary(total=total, passed=passed, failed=failed, use_color=use_color)
     json_file, csv_file = export_results(
@@ -192,7 +208,8 @@ def main() -> None:
     print("\nDetailed logs saved to results.txt")
     print(f"JSON report saved to {json_file}")
     print(f"CSV report saved to {csv_file}")
+    return 1 if failed > 0 else 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

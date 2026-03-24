@@ -20,19 +20,28 @@ def test_string_uppercase() -> None:
     )
 
 
+def test_sorted_order() -> None:
+    """Pass test: verifies sorting logic."""
+    values = [4, 2, 3, 1]
+    assert sorted(values) == [1, 2, 3, 4], "Sorting test failed: unexpected order."
+
+
 def test_intentional_failure() -> None:
     """Fail test: intentionally wrong expected value."""
     assert 10 * 2 == 25, "Intentional failure: 10 * 2 is not 25."
 
 
-def get_test_cases():
+def get_test_cases(include_intentional_failure: bool = False):
     """
     Return all test functions in a list.
 
     Keeping this in one place makes it easy to add/remove tests later.
     """
-    return [
+    tests = [
         test_addition,
         test_string_uppercase,
-        test_intentional_failure,
+        test_sorted_order,
     ]
+    if include_intentional_failure:
+        tests.append(test_intentional_failure)
+    return tests
