@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+
+# Generated test reports
+reports/
+custom_reports/
+results_*.json
+results_*.csv
